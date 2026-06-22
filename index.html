@@ -396,48 +396,81 @@
     .step p { font-size: .85rem; color: var(--ink); max-width: 160px; margin: 0 auto; line-height: 1.55; opacity: 0.85; }
 
     /* ── PORTFOLIO ── */
-    .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: auto auto; gap: 20px; margin-top: 32px; }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 280px 280px;
+      gap: 20px;
+      margin-top: 32px;
+    }
+    /* Brand Identity: 2 cols, row 1 */
+    .port-item:nth-child(1) { grid-column: 1 / 3; grid-row: 1; }
+    /* Social Campaign: col 3, both rows tall */
+    .port-item:nth-child(2) { grid-column: 3; grid-row: 1 / 3; }
+    /* Logofolio: col 1, row 2 */
+    .port-item:nth-child(3) { grid-column: 1; grid-row: 2; }
+    /* Print Design: col 2, row 2 */
+    .port-item:nth-child(4) { grid-column: 2; grid-row: 2; }
+    /* Visual Identity: full width row 3 */
+    .port-item:nth-child(5) { grid-column: 1 / 3; grid-row: 3; display: flex; }
+
     .port-item {
-      border-radius: 18px; overflow: hidden; position: relative; cursor: pointer;
-      transition: transform .45s cubic-bezier(.2,.9,.3,1), box-shadow .4s;
-      background: rgba(240,240,245,0.9);
-      border: 1px solid rgba(220,220,230,0.7);
-      min-height: 240px;
+      border-radius: 20px; overflow: hidden; position: relative; cursor: pointer;
+      transition: transform .4s cubic-bezier(.2,.9,.3,1), box-shadow .4s;
+      background: #22212c;
+      border: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-decoration: none;
     }
-    /* Brand Identity: spans 2 cols, row 1 */
-    .port-item:nth-child(1) { grid-column: span 2; aspect-ratio: 2/1; }
-    /* Social Campaign: spans 1 col but 2 rows to fill the gap */
-    .port-item:nth-child(2) { grid-column: 3; grid-row: 1 / span 2; aspect-ratio: unset; }
-    .port-item:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 48px rgba(252,180,56,.25); }
+    .port-item:hover { transform: translateY(-6px) scale(1.015); box-shadow: 0 20px 52px rgba(252,180,56,.2); border-color: rgba(252,180,56,0.3); }
 
-    /* PDF Preview embed inside portfolio */
-    .port-pdf-preview {
-      position: absolute; inset: 0; width: 100%; height: 100%;
-      border: none; pointer-events: none; opacity: 0.92;
-      background: #fff;
-    }
-    .port-overlay {
+    /* Honey hex bg watermark */
+    .port-item::before {
+      content: '';
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(34,33,44,0.85) 0%, rgba(34,33,44,0.1) 50%, transparent 100%);
-      display: flex; flex-direction: column; justify-content: flex-end;
-      padding: 22px 22px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='104'%3E%3Cpolygon points='30,2 58,17 58,47 30,62 2,47 2,17' fill='none' stroke='%23fcb438' stroke-width='1' stroke-opacity='0.06'/%3E%3C/svg%3E");
+      background-size: 40px 70px;
+      pointer-events: none; z-index: 0;
     }
-    .port-item:hover .port-overlay { opacity: 1; }
-    .port-label { font-weight: 600; font-size: 1rem; color: #fff; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
-    .port-label i { color: var(--honey); font-size: 1.05rem; }
-    .port-tag { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; background: var(--honey); color: var(--ink); padding: 4px 12px; border-radius: 20px; align-self: flex-start; }
+    /* Gradient overlay that reveals on hover */
+    .port-item::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 80% at 50% 60%, rgba(252,180,56,0.1) 0%, transparent 70%);
+      opacity: 0; transition: opacity 0.4s; z-index: 1; pointer-events: none;
+    }
+    .port-item:hover::after { opacity: 1; }
 
-    /* Placeholder for when no PDF */
-    .port-placeholder {
-      position: absolute; inset: 0; display: flex; flex-direction: column;
-      align-items: center; justify-content: center; gap: 14px;
-      background: linear-gradient(135deg, rgba(252,180,56,0.08) 0%, rgba(252,180,56,0.18) 100%);
+    .port-inner {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 16px; padding: 32px 24px; text-align: center; width: 100%; height: 100%;
     }
-    .port-placeholder i { font-size: 2.4rem; color: var(--honey); opacity: 0.7; }
-    .port-placeholder-label { font-weight: 600; font-size: .95rem; color: var(--ink); }
-    .port-placeholder-tag { font-size: .72rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; background: var(--ink); color: var(--white); padding: 4px 12px; border-radius: 20px; }
+    .port-icon {
+      width: 64px; height: 64px; border-radius: 18px;
+      background: rgba(252,180,56,0.12); border: 1px solid rgba(252,180,56,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem; color: var(--honey);
+      transition: transform 0.35s cubic-bezier(.2,.9,.3,1), background 0.3s;
+    }
+    .port-item:hover .port-icon { transform: translateY(-4px) scale(1.08); background: rgba(252,180,56,0.22); }
+    .port-label { font-weight: 700; font-size: 1.05rem; color: var(--white); display: flex; align-items: center; gap: 0; }
+    .port-tag {
+      font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .1em;
+      background: rgba(252,180,56,0.15); color: var(--honey);
+      padding: 4px 14px; border-radius: 20px;
+      border: 1px solid rgba(252,180,56,0.25);
+    }
+    .port-view-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--honey); color: var(--ink);
+      padding: 9px 20px; border-radius: 30px;
+      font-size: .82rem; font-weight: 700;
+      text-decoration: none;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity 0.3s, transform 0.3s, background 0.2s;
+    }
+    .port-item:hover .port-view-btn { opacity: 1; transform: translateY(0); }
+    .port-view-btn:hover { background: var(--honey-light); }
 
     /* View PDF button shown on hover */
     .port-view-btn {
@@ -594,18 +627,24 @@
 
     @media (max-width: 960px) {
       .services-grid { grid-template-columns: repeat(2, 1fr); }
-      .portfolio-grid { grid-template-columns: 1fr 1fr; }
-      .port-item:nth-child(1) { grid-column: span 2; grid-row: auto; aspect-ratio: 2/1; }
-      .port-item:nth-child(2) { grid-column: auto; grid-row: auto; aspect-ratio: 4/3; }
+      .portfolio-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .port-item:nth-child(1) { grid-column: 1 / 3; grid-row: auto; }
+      .port-item:nth-child(2) { grid-column: auto; grid-row: auto; }
+      .port-item:nth-child(3) { grid-column: auto; grid-row: auto; }
+      .port-item:nth-child(4) { grid-column: auto; grid-row: auto; }
+      .port-item:nth-child(5) { grid-column: 1 / 3; grid-row: auto; }
     }
     @media (max-width: 640px) {
       .nav-inner { padding: 0 20px; height: 76px; }
       .nav-popup-inner { padding-top: 96px; width: 100%; border-bottom-left-radius: 0; }
       .hero h1 { font-size: 2.5rem; }
       .services-grid { grid-template-columns: 1fr; }
-      .portfolio-grid { grid-template-columns: 1fr; }
-      .port-item:nth-child(1) { grid-column: span 1; grid-row: auto; aspect-ratio: 4/3; }
-      .port-item:nth-child(2) { grid-column: auto; grid-row: auto; aspect-ratio: 4/3; }
+      .portfolio-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
+      .port-item:nth-child(1),
+      .port-item:nth-child(2),
+      .port-item:nth-child(3),
+      .port-item:nth-child(4),
+      .port-item:nth-child(5) { grid-column: 1 !important; grid-row: auto !important; min-height: 200px; }
       .cta-block { padding: 48px 24px; border-radius: 28px; }
       .process-row::after { display: none; }
       .container { padding: 0 20px; }
@@ -864,55 +903,55 @@
       
       <div class="portfolio-grid stagger">
 
-        <!-- 1: Brand Identity (spans 2 cols) -->
-        <div class="port-item" style="grid-column: span 2; aspect-ratio: 2/1;">
-          <iframe class="port-pdf-preview" src="Brand Identity.pdf#view=FitH&toolbar=0&navpanes=0" title="Brand Identity"></iframe>
-          <div class="port-overlay">
-            <div class="port-label"><i class="fas fa-layer-group"></i> Brand Identity</div>
+        <!-- 1: Brand Identity — 2 cols, row 1 -->
+        <a class="port-item" href="Brand Identity.pdf" target="_blank">
+          <div class="port-inner">
+            <div class="port-icon"><i class="fas fa-layer-group"></i></div>
+            <div class="port-label">Brand Identity</div>
             <div class="port-tag">Branding</div>
-            <a href="Brand Identity.pdf" target="_blank" class="port-view-btn"><i class="fas fa-eye"></i> View PDF</a>
+            <a href="Brand Identity.pdf" target="_blank" class="port-view-btn"><i class="fas fa-arrow-up-right-from-square" style="font-size:.75rem"></i> Open PDF</a>
           </div>
-        </div>
+        </a>
 
-        <!-- 2: Social Campaign -->
-        <div class="port-item">
-          <iframe class="port-pdf-preview" src="Social Campaign.pdf#view=FitH&toolbar=0&navpanes=0" title="Social Campaign"></iframe>
-          <div class="port-overlay">
-            <div class="port-label"><i class="fas fa-hashtag"></i> Social Campaign</div>
+        <!-- 2: Social Campaign — col 3, spans both rows -->
+        <a class="port-item" href="Social Campaign.pdf" target="_blank">
+          <div class="port-inner">
+            <div class="port-icon"><i class="fas fa-hashtag"></i></div>
+            <div class="port-label">Social Campaign</div>
             <div class="port-tag">Social</div>
-            <a href="Social Campaign.pdf" target="_blank" class="port-view-btn"><i class="fas fa-eye"></i> View PDF</a>
+            <a href="Social Campaign.pdf" target="_blank" class="port-view-btn"><i class="fas fa-arrow-up-right-from-square" style="font-size:.75rem"></i> Open PDF</a>
           </div>
-        </div>
+        </a>
 
-        <!-- 3: Logofolio -->
-        <div class="port-item">
-          <iframe class="port-pdf-preview" src="Logofolio.pdf#view=FitH&toolbar=0&navpanes=0" title="Logofolio"></iframe>
-          <div class="port-overlay">
-            <div class="port-label"><i class="fas fa-pen-nib"></i> Logofolio</div>
+        <!-- 3: Logofolio — col 1, row 2 -->
+        <a class="port-item" href="Logofolio.pdf" target="_blank">
+          <div class="port-inner">
+            <div class="port-icon"><i class="fas fa-pen-nib"></i></div>
+            <div class="port-label">Logofolio</div>
             <div class="port-tag">Logo Design</div>
-            <a href="Logofolio.pdf" target="_blank" class="port-view-btn"><i class="fas fa-eye"></i> View PDF</a>
+            <a href="Logofolio.pdf" target="_blank" class="port-view-btn"><i class="fas fa-arrow-up-right-from-square" style="font-size:.75rem"></i> Open PDF</a>
           </div>
-        </div>
+        </a>
 
-        <!-- 4: Print Design -->
-        <div class="port-item">
-          <iframe class="port-pdf-preview" src="Print Design.pdf#view=FitH&toolbar=0&navpanes=0" title="Print Design"></iframe>
-          <div class="port-overlay">
-            <div class="port-label"><i class="fas fa-print"></i> Print Design</div>
+        <!-- 4: Print Design — col 2, row 2 -->
+        <a class="port-item" href="Print Design.pdf" target="_blank">
+          <div class="port-inner">
+            <div class="port-icon"><i class="fas fa-print"></i></div>
+            <div class="port-label">Print Design</div>
             <div class="port-tag">Print</div>
-            <a href="Print Design.pdf" target="_blank" class="port-view-btn"><i class="fas fa-eye"></i> View PDF</a>
+            <a href="Print Design.pdf" target="_blank" class="port-view-btn"><i class="fas fa-arrow-up-right-from-square" style="font-size:.75rem"></i> Open PDF</a>
           </div>
-        </div>
+        </a>
 
-        <!-- 5: Visual Identity -->
-        <div class="port-item">
-          <iframe class="port-pdf-preview" src="Visual Identity.pdf#view=FitH&toolbar=0&navpanes=0" title="Visual Identity"></iframe>
-          <div class="port-overlay">
-            <div class="port-label"><i class="fas fa-eye"></i> Visual Identity</div>
+        <!-- 5: Visual Identity — spans 2 cols, row 3 -->
+        <a class="port-item" href="Visual Identity.pdf" target="_blank">
+          <div class="port-inner">
+            <div class="port-icon"><i class="fas fa-eye"></i></div>
+            <div class="port-label">Visual Identity</div>
             <div class="port-tag">Design</div>
-            <a href="Visual Identity.pdf" target="_blank" class="port-view-btn"><i class="fas fa-eye"></i> View PDF</a>
+            <a href="Visual Identity.pdf" target="_blank" class="port-view-btn"><i class="fas fa-arrow-up-right-from-square" style="font-size:.75rem"></i> Open PDF</a>
           </div>
-        </div>
+        </a>
 
       </div>
     </div>
